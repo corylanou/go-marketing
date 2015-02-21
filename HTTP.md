@@ -1,6 +1,6 @@
 # Your first Web Server
 
-In this quicwekstart guide, we will cover the following basics:
+In this quick start guide, we will cover the following basics:
 
 - Spin up a webserver
 - Basic Routing
