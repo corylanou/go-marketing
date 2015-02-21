@@ -21,22 +21,24 @@ func main() {
 	// Lets keep a reference to when we started
 	start := time.Now()
 
-	for _, site := range sites {
-		// Increment the waitgroup
-		wg.Add(1)
+	// Set the value for the waitgroup
+	wg.Add(len(sites))
 
+	for _, site := range sites {
 		// Launch each retrieval in a go routine.  This makes each request concurrent
 		go func(site string) {
 			defer wg.Done()
 			// start a timer for this request
+
 			begin := time.Now()
+
 			// Retreive the site
-			_, err := http.Get(site)
-			if err != nil {
+			if _, err := http.Get(site); err != nil {
 				fmt.Println(site, err)
-			} else {
-				fmt.Printf("Site %q took %s to retrieve.\n", site, time.Since(begin))
+				continue
 			}
+
+			fmt.Printf("Site %q took %s to retrieve.\n", site, time.Since(begin))
 		}(site)
 	}
 

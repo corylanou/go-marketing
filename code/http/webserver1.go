@@ -11,15 +11,17 @@ import (
 
 func main() {
 	// We need to create a router
-	router := mux.NewRouter().StrictSlash(true)
+	rt := mux.NewRouter().StrictSlash(true)
+
 	// Add the "index" or root path
-	router.HandleFunc("/", Index)
+	rt.HandleFunc("/", Index)
+
 	// Fire up the server
 	log.Println("Starting server on http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(":8080", rt))
 }
 
-// This is the "index" handler
+// Index is the "index" handler
 func Index(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello World from %q", html.EscapeString(r.URL.Path))
 }

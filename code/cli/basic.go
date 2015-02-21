@@ -6,9 +6,7 @@ import (
 )
 
 func main() {
-	var (
-		cmd string
-	)
+	var cmd string
 
 	flag.StringVar(&cmd, "cmd", cmd, `cmd can be either "hello" or "bye"`)
 	flag.Parse()

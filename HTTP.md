@@ -124,10 +124,10 @@ type PageData struct {
 func main() {
 	// We need to create a router
 	rt := mux.NewRouter().StrictSlash(true)
-	
+
 	// Add the "index" or root path
 	rt.HandleFunc("/", Index)
-	
+
 	// Fire up the server
 	log.Println("Starting server on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", rt))
@@ -172,13 +172,14 @@ func htmlTemplate(pd PageData) (string, error) {
 
 	// We need somewhere to write the executed template to
 	var out bytes.Buffer
-	
+
 	// Render the template with the data we passed in
 	if err := tmpl.Execute(&out, pd); err != nil {
+		// If we couldn't render, return a error
 		return "", err
 	}
-	
-	// Return the template and the error
+
+	// Return the template
 	return out.String(), nil
 }
 ```

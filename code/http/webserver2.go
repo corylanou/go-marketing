@@ -9,26 +9,34 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func main() {
-	// We need to create a router
-	router := mux.NewRouter().StrictSlash(true)
-	// Add the "index" or root path
-	router.HandleFunc("/", Index)
-	// Fire up the server
-	log.Println("Starting server on http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", router))
+// This is a basic struct to hold basic page data variables
+type PageData struct {
+	Title string
+	Body  string
 }
 
-// This is the "index" handler
+func main() {
+	// We need to create a router
+	rt := mux.NewRouter().StrictSlash(true)
+
+	// Add the "index" or root path
+	rt.HandleFunc("/", Index)
+
+	// Fire up the server
+	log.Println("Starting server on http://localhost:8080")
+	log.Fatal(http.ListenAndServe(":8080", rt))
+}
+
+// Index is the "index" handler
 func Index(w http.ResponseWriter, r *http.Request) {
 	// Fill out page data for index
-	pageData := PageData{
+	pd := PageData{
 		Title: "Index Page",
 		Body:  "This is the body of the page.",
 	}
 
 	// Render a template with our page data
-	tmpl, err := htmlTemplate(pageData)
+	tmpl, err := htmlTemplate(pd)
 
 	// If we got an error, write it out and exit
 	if err != nil {
@@ -41,13 +49,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(tmpl))
 }
 
-// This is a basic struct to hold basic page data variables
-type PageData struct {
-	Title string
-	Body  string
-}
-
-func htmlTemplate(pageData PageData) (string, error) {
+func htmlTemplate(pd PageData) (string, error) {
 	// Define a basic HTML template
 	html := `<HTML>
 	<head><title>{{.Title}}</title></head>
@@ -58,11 +60,19 @@ func htmlTemplate(pageData PageData) (string, error) {
 
 	// Parse the template
 	tmpl, err := template.New("index").Parse(html)
+	if err != nil {
+		return "", err
+	}
 
 	// We need somewhere to write the executed template to
 	var out bytes.Buffer
+
 	// Render the template with the data we passed in
-	err = tmpl.Execute(&out, pageData)
-	// Return the template and the error
-	return out.String(), err
+	if err := tmpl.Execute(&out, pd); err != nil {
+		// If we couldn't render, return a error
+		return "", err
+	}
+
+	// Return the template
+	return out.String(), nil
 }
