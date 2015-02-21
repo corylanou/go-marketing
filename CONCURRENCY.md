@@ -133,7 +133,7 @@ func main() {
 		// Increment the waitgroup
 		wg.Add(1)
 
-		// Launch each retreiveal in a go routine.  This makes each request concurrent
+		// Launch each retrieval in a go routine.  This makes each request concurrent
 		go func(site string) {
 			defer wg.Done()
 			// start a timer for this request
