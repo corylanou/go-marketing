@@ -70,7 +70,6 @@ func main() {
 	start := time.Now()
 
 	for _, site := range sites {
-		// Launch each retreiveal in a go routine.  This makes each request concurrent
 		// start a timer for this request
 		begin := time.Now()
 		// Retreive the site
