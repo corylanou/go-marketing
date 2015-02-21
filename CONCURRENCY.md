@@ -26,6 +26,7 @@ import (
 
 func main() {
 	flag.Parse()
+
 	// flag.Args contains all non-flag arguments
 	fmt.Println(flag.Args())
 }
@@ -72,13 +73,14 @@ func main() {
 	for _, site := range sites {
 		// start a timer for this request
 		begin := time.Now()
+		
 		// Retreive the site
-		_, err := http.Get(site)
-		if err != nil {
+		if _, err := http.Get(site); err != nil {
 			fmt.Println(site, err)
-		} else {
-			fmt.Printf("Site %q took %s to retrieve.\n", site, time.Since(begin))
+			continue
 		}
+		
+		fmt.Printf("Site %q took %s to retrieve.\n", site, time.Since(begin))
 	}
 
 	fmt.Printf("Entire process took %s\n", time.Since(start))
@@ -128,23 +130,25 @@ func main() {
 
 	// Lets keep a reference to when we started
 	start := time.Now()
+	
+	// Set the value for the waitgroup
+	wg.Add(len(sites))
 
 	for _, site := range sites {
-		// Increment the waitgroup
-		wg.Add(1)
-
 		// Launch each retrieval in a go routine.  This makes each request concurrent
 		go func(site string) {
 			defer wg.Done()
 			// start a timer for this request
+			
 			begin := time.Now()
+			
 			// Retreive the site
-			_, err := http.Get(site)
-			if err != nil {
+			if _, err := http.Get(site); err != nil {
 				fmt.Println(site, err)
-			} else {
-				fmt.Printf("Site %q took %s to retrieve.\n", site, time.Since(begin))
+				continue
 			}
+			
+			fmt.Printf("Site %q took %s to retrieve.\n", site, time.Since(begin))
 		}(site)
 	}
 
