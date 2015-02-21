@@ -174,7 +174,7 @@ Notice how it not only takes slightly longer than the longest request?  This is 
 The big difference with the final program is the use of a `WaitGroup` and launching everything
 inside of a go routine by using the `go func` signature.
 
-You can read more on wait groups in the [http://golang.org/pkg/sync](Sync Package).
+You can read more on wait groups in the [Sync Package](http://golang.org/pkg/sync).
 
 ## Summary
 
