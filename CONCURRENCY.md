@@ -5,7 +5,7 @@ In this quick start guide, we will cover the basics of working concurrently.
 ## Retrieving Websites
 
 Sometimes, we need to do a lot of operations that will take an unkown length of time.
-To want to do this as fast and effeciently as possible, so we can use Go's built in concurrecy.
+We want to do this as fast and effeciently as possible, so we can use Go's built in concurrecy.
 
 ## The problem
 
